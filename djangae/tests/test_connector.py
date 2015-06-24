@@ -556,12 +556,12 @@ class BackendTests(TestCase):
         self.assertItemsEqual([obj], date_set.dates.exclude(time=None))
 
         # sorting should work too
-        self.assertItemsEqual([obj], date_set.dates.order_by('datetime'))
-        self.assertItemsEqual([obj], date_set.dates.order_by('-datetime'))
-        self.assertItemsEqual([obj], date_set.dates.order_by('date'))
-        self.assertItemsEqual([obj], date_set.dates.order_by('-date'))
-        self.assertItemsEqual([obj], date_set.dates.order_by('time'))
-        self.assertItemsEqual([obj], date_set.dates.order_by('-time'))
+        self.assertItemsEqual([obj, empty_obj], date_set.dates.order_by('datetime'))
+        self.assertItemsEqual([empty_obj, obj], date_set.dates.order_by('-datetime'))
+        self.assertItemsEqual([obj, empty_obj], date_set.dates.order_by('date'))
+        self.assertItemsEqual([empty_obj, obj], date_set.dates.order_by('-date'))
+        self.assertItemsEqual([obj, empty_obj], date_set.dates.order_by('time'))
+        self.assertItemsEqual([empty_obj, obj], date_set.dates.order_by('-time'))
 
 
 class ModelFormsetTest(TestCase):
