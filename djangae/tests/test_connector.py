@@ -555,6 +555,14 @@ class BackendTests(TestCase):
         self.assertItemsEqual([obj], date_set.dates.exclude(date=None))
         self.assertItemsEqual([obj], date_set.dates.exclude(time=None))
 
+        # sorting should work too
+        self.assertItemsEqual([obj], date_set.dates.order_by('datetime'))
+        self.assertItemsEqual([obj], date_set.dates.order_by('-datetime'))
+        self.assertItemsEqual([obj], date_set.dates.order_by('date'))
+        self.assertItemsEqual([obj], date_set.dates.order_by('-date'))
+        self.assertItemsEqual([obj], date_set.dates.order_by('time'))
+        self.assertItemsEqual([obj], date_set.dates.order_by('-time'))
+
 
 class ModelFormsetTest(TestCase):
     def test_reproduce_index_error(self):
