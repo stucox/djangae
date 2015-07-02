@@ -1316,6 +1316,10 @@ class EdgeCaseTests(TestCase):
         self.assertEqual(2, len(results))
         self.assertItemsEqual(["A", "B"], [x.username for x in results])
 
+        # Test querying for an empty string on primary_key field
+        with self.assertRaises(TestFruit.DoesNotExist):
+            TestFruit.objects.get(name='')
+
     def test_or_queryset(self):
         """
             This constructs an OR query, this is currently broken in the parse_where_and_check_projection
