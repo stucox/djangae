@@ -789,7 +789,11 @@ class SelectCommand(object):
                         raise EmptyResultSet()
 
                     if not isinstance(value, datastore.Key):
-                        value = get_datastore_key(self.model, value)
+                        try:
+                            value = get_datastore_key(self.model, value)
+                        except (datastore_errors.BadValueError, datastore_errors.BadArgumentError):
+                            # A key couldn't be constructed from this value, so no such entity can exist
+                            raise EmptyResultSet()
 
                 key = "%s %s" % (column, op)
                 try:

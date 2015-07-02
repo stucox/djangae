@@ -27,7 +27,7 @@ from google.appengine.api.datastore_types import Blob, Text
 from google.appengine.ext.db import metadata
 from google.appengine.datastore import datastore_stub_util
 from google.appengine.api.datastore import Key
-from google.appengine.api import datastore
+from google.appengine.api import datastore, datastore_errors
 
 #DJANGAE
 from djangae.db.utils import (
@@ -251,7 +251,11 @@ class DatabaseOperations(BaseDatabaseOperations):
 
     def prep_lookup_value(self, model, value, field, column=None):
         if field.primary_key and (not column or column == model._meta.pk.column):
-            return self.prep_lookup_key(model, value, field)
+            try:
+                return self.prep_lookup_key(model, value, field)
+            except datastore_errors.BadValueError:
+                # A key couldn't be constructed from this value
+                return None
 
         db_type = field.db_type(self.connection)
 
